@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { body, validationResult } from 'express-validator'
+import { validateRequest } from '../middlewares/validate-request'
+import { body } from 'express-validator'
 import { BadRequestError } from '../errors/bad-request-error'
-import { RequestValidationError } from '../errors/request-validation-error'
 import { User } from '../models/User'
 
 const router = express.Router()
@@ -17,14 +17,8 @@ router.post(
 			.isLength({ min: 4, max: 20 })
 			.withMessage('Password must be within 4 and 20 characters'),
 	],
+	validateRequest,
 	async (req: Request, res: Response) => {
-		const errors = validationResult(req)
-
-		if (!errors.isEmpty()) {
-			throw new RequestValidationError(errors.array())
-			// return res.status(400).send(errors.array())
-		}
-
 		const { email, password } = req.body
 
 		const existingUser = await User.findOne({ email })
@@ -42,7 +36,7 @@ router.post(
 				id: user.id,
 				email: user.email,
 			},
-			'asde'
+			process.env.JWT_KEY!
 		)
 
 		// Store it on session object
