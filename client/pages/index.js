@@ -1,6 +1,9 @@
 import Link from 'next/link'
+import buildClient from '../api/build-client'
 
-const Landing = () => {
+const Landing = ({ currentUser }) => {
+	console.log(currentUser)
+
 	return (
 		<div>
 			<h1>Landing Page</h1>
@@ -13,6 +16,13 @@ const Landing = () => {
 			</Link>
 		</div>
 	)
+}
+
+Landing.getInitialProps = async (context) => {
+	const client = buildClient(context)
+	const { data } = await client.get('/api/users/currentuser')
+
+	return data
 }
 
 export default Landing
