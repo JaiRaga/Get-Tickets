@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import axios from 'axios'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import useRequest from '../../hooks/use-request'
 
 const Signup = () => {
+	const router = useRouter()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const { doRequest, errors } = useRequest({
@@ -43,7 +43,7 @@ const Signup = () => {
 				/>
 			</div>
 			{errors}
-			<button className='btn btn-primary'>Submit</button>
+			<button className='btn btn-primary'>Sign up</button>
 		</form>
 	)
 }
