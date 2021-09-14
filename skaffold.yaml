@@ -2,7 +2,7 @@ apiVersion: skaffold/v2alpha3
 kind: Config
 deploy:
   kubectl:
-    manifests: 
+    manifests:
       - ./infra/k8s/*
 build:
   local:
@@ -13,6 +13,14 @@ build:
       docker:
         dockerfile: Dockerfile
       sync:
-        manual: 
+        manual:
           - src: 'src/**/*.ts'
+            dest: .
+    - image: jairaga/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
             dest: .
